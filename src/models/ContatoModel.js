@@ -58,7 +58,7 @@ Contato.prototype.edit = async function(id) {
   this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, { new: true });
 };
 
-// Métodos estáticos
+// Métodos estáticos nao tem acesso ao this.
 Contato.buscaPorId = async function(id) {
   if(typeof id !== 'string') return;
   const contato = await ContatoModel.findById(id);
