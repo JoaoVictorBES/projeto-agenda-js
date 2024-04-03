@@ -7,12 +7,16 @@ const app = express();
 
 // conectando com a base de dados
 const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING)
+mongoose.connect(process.env.CONNECTIONSTRING,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false
+    })
     .then(() => {
-        app.emit('pronto');
+      app.emit('pronto');
     })
     .catch(e => console.log(e));
-
 // Identifica o computador de um usuario, lógica dos cookies
 const session = require('express-session');
 
@@ -56,7 +60,9 @@ app.use(flash());
 // Arquivos que renderizam na tela
 app.set('views', './src/views' );
 app.set('view engine', 'ejs');
-
+app.use(csrf());
+app.use(checkCsrfError);
+app.use(csrfMiddleware);
 app.use(meuMiddleware);
 app.use(routes);
 
